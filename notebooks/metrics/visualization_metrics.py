@@ -75,6 +75,7 @@ def visualization (ori_data, generated_data, analysis):
     plt.title('PCA plot')
     plt.xlabel('x-pca')
     plt.ylabel('y_pca')
+    plt.savefig('../plots/pcavis.png')
     plt.show()
     
   elif analysis == 'tsne':
@@ -99,4 +100,6 @@ def visualization (ori_data, generated_data, analysis):
     plt.title('t-SNE plot')
     plt.xlabel('x-tsne')
     plt.ylabel('y_tsne')
+    
+    plt.savefig('../plots/pcavis.png')
     plt.show()    
