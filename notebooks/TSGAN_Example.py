@@ -93,6 +93,6 @@ scores = pd.DataFrame({'DiscriminativeScore' : discriminative_score, 'Predictive
 # In[ ]:
 
 
-visualization(ori_data, generated_data, 'pca', save=False)
-visualization(ori_data, generated_data, 'tsne', save=False)
+visualization(ori_data, generated_data, 'pca')
+visualization(ori_data, generated_data, 'tsne')
 
