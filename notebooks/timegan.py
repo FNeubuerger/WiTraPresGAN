@@ -38,7 +38,8 @@ def timegan (ori_data, parameters):
   tf.reset_default_graph()
 
   # Basic Parameters
-  no, seq_len, dim = np.asarray(ori_data).shape
+  no = len(ori_data[0])
+  seq_len, dim = np.asarray(ori_data[0]).shape
     
   # Maximum sequence length and each sequence length
   ori_time, max_seq_len = extract_time(ori_data)
@@ -63,7 +64,7 @@ def timegan (ori_data, parameters):
     return norm_data, min_val, max_val
   
   # Normalization
-  ori_data, min_val, max_val = MinMaxScaler(ori_data)
+  #ori_data, min_val, max_val = MinMaxScaler(ori_data)
               
   ## Build a RNN networks          
   
@@ -301,7 +302,7 @@ def timegan (ori_data, parameters):
     generated_data.append(temp)
         
   # Renormalization
-  generated_data = generated_data * max_val
-  generated_data = generated_data + min_val
+  #generated_data = generated_data * max_val
+  #generated_data = generated_data + min_val
     
   return generated_data
