@@ -101,5 +101,5 @@ def visualization (ori_data, generated_data, analysis):
     plt.xlabel('x-tsne')
     plt.ylabel('y_tsne')
     
-    plt.savefig('../plots/pcavis.png')
+    plt.savefig('../plots/tsnevis.png')
     plt.show()    
