@@ -21,7 +21,12 @@ from metrics.visualization_metrics import visualization
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 import tensorflow as tf
+from tensorflow.compat.v1 import ConfigProto
+from tensorflow.compat.v1 import InteractiveSession
 
+config = ConfigProto()
+config.gpu_options.allow_growth = True
+session = InteractiveSession(config=config)
 
 # In[3]:
 
@@ -49,7 +54,7 @@ parameters = dict()
 parameters['module'] = 'gru' 
 parameters['hidden_dim'] = 24
 parameters['num_layer'] = 3
-parameters['iterations'] = 10000
+parameters['iterations'] = 10
 parameters['batch_size'] = 128
 
 
@@ -95,4 +100,5 @@ scores = pd.DataFrame({'DiscriminativeScore' : discriminative_score, 'Predictive
 
 visualization(ori_data, generated_data, 'pca')
 visualization(ori_data, generated_data, 'tsne')
+
 
