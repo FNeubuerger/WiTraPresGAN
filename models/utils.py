@@ -190,7 +190,7 @@ def timegan_trainer(model, data, time, args):
         shuffle=False    
     )
 
-    model.to(args.device)
+    torch.nn.DataParallel(model).to(args.device)
 
     # Initialize Optimizers
     e_opt = torch.optim.Adam(model.embedder.parameters(), lr=args.learning_rate)
