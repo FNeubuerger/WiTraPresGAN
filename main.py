@@ -175,24 +175,24 @@ def main(args):
           f'(1) Ori: {str(np.round(ori_feat_pred_perf, 4))}\n' +
           f'(2) New: {str(np.round(new_feat_pred_perf, 4))}\n')
 
-    # 2. One step ahead prediction
-    print("Running one step ahead prediction using original data...")
-    ori_step_ahead_pred_perf = one_step_ahead_prediction(
-        (train_data, train_time), 
-        (test_data, test_time)
-    )
-    print("Running one step ahead prediction using generated data...")
-    new_step_ahead_pred_perf = one_step_ahead_prediction(
-        (generated_data, generated_time),
-        (test_data, test_time)
-    )
-
-    step_ahead_pred = [ori_step_ahead_pred_perf, new_step_ahead_pred_perf]
-
-    print('One step ahead prediction results:\n' +
-          f'(1) Ori: {str(np.round(ori_step_ahead_pred_perf, 4))}\n' +
-          f'(2) New: {str(np.round(new_step_ahead_pred_perf, 4))}\n')
-
+    # # 2. One step ahead prediction
+    # print("Running one step ahead prediction using original data...")
+    # ori_step_ahead_pred_perf = one_step_ahead_prediction(
+    #     (train_data, train_time), 
+    #     (test_data, test_time)
+    # )
+    # print("Running one step ahead prediction using generated data...")
+    # new_step_ahead_pred_perf = one_step_ahead_prediction(
+    #     (generated_data, generated_time),
+    #     (test_data, test_time)
+    # )
+# 
+    # step_ahead_pred = [ori_step_ahead_pred_perf, new_step_ahead_pred_perf]
+# 
+    # print('One step ahead prediction results:\n' +
+    #       f'(1) Ori: {str(np.round(ori_step_ahead_pred_perf, 4))}\n' +
+    #       f'(2) New: {str(np.round(new_step_ahead_pred_perf, 4))}\n')
+# 
     print(f"Total Runtime: {(time.time() - start)/60} mins\n")
 
     return None
