@@ -16,12 +16,12 @@ python main.py \
 --is_train          $train \
 --seed              420133769 \
 --feat_pred_no      1 \
---max_seq_len       500 \
+--max_seq_len       367 \
 --train_rate        0.5 \
 --emb_epochs        $emb_epochs \
 --sup_epochs        $sup_epochs \
 --gan_epochs        $gan_epochs \
---batch_size        512 \
+--batch_size        2048 \
 --hidden_dim        20 \
 --num_layers        3 \
 --dis_thresh        0.15 \
