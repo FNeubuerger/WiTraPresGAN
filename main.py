@@ -106,7 +106,7 @@ def main(args):
     # Log start time
     start = time.time()
 
-    model = torch.nn.DataParallel(TimeGAN(args))
+    model = TimeGAN(args)
     if args.is_train == True:
         timegan_trainer(model, train_data, train_time, args)
     generated_data = timegan_generator(model, train_time, args)
