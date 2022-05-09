@@ -6,9 +6,9 @@ export TZ="GMT-8"
 exp="quick_test"
 
 # Iteration variables
-emb_epochs=500
-sup_epochs=500
-gan_epochs=500
+emb_epochs=5
+sup_epochs=5
+gan_epochs=5
 
 python main.py \
 --device            cuda \
@@ -21,7 +21,7 @@ python main.py \
 --emb_epochs        $emb_epochs \
 --sup_epochs        $sup_epochs \
 --gan_epochs        $gan_epochs \
---batch_size        10000 \
+--batch_size        2048 \
 --hidden_dim        20 \
 --num_layers        3 \
 --dis_thresh        0.15 \
