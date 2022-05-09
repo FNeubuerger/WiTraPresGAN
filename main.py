@@ -67,11 +67,14 @@ def main(args):
 
     if args.device == "cuda" and torch.cuda.is_available():
         print("Using CUDA\n")
-        args.device = torch.device("cuda:0")
+        args.device = torch.device("cuda")
         # torch.cuda.manual_seed_all(args.seed)
         torch.cuda.manual_seed(args.seed)
         torch.backends.cudnn.deterministic = True
         torch.backends.cudnn.benchmark = False
+        print('Using Cuda Devices')
+        print(torch.cuda.device_count())
+        print(torch.cuda.get_device_name())
     else:
         print("Using CPU\n")
         args.device = torch.device("cpu")
@@ -103,7 +106,7 @@ def main(args):
     # Log start time
     start = time.time()
 
-    model = TimeGAN(args)
+    model = torch.nn.DataParallel(TimeGAN(args))
     if args.is_train == True:
         timegan_trainer(model, train_data, train_time, args)
     generated_data = timegan_generator(model, train_time, args)
