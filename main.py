@@ -167,7 +167,8 @@ def main(args):
     new_feat_pred_perf = feature_prediction(
         (generated_data, generated_time),
         (test_data, test_time),
-        feat_idx
+        feat_idx, 
+        args.max_seq_len
     )
 
     feat_pred = [ori_feat_pred_perf, new_feat_pred_perf]
