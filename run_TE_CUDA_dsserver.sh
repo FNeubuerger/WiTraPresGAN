@@ -10,7 +10,7 @@ emb_epochs=5000
 sup_epochs=5000
 gan_epochs=100
 
-python main.py \
+python main_TE.py \
 --device            cuda \
 --exp               $exp \
 --is_train          $train \
