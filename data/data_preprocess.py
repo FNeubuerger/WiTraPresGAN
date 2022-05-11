@@ -65,7 +65,7 @@ def data_preprocess(
     # Load csv
     print("Loading data...\n")
     ori_data = pd.read_csv(file_name)
-
+    print("Loaded Data of shape:", ori_data.shape)
     # Remove spurious column, so that column 0 is now 'admissionid'.
     #if ori_data.columns[0] == "Unnamed: 0":  
     #    ori_data = ori_data.drop(["Unnamed: 0"], axis=1)
