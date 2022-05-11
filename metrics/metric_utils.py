@@ -37,7 +37,7 @@ def reidentify_score(enlarge_label, pred_label):
     accuracy = accuracy_score(enlarge_label, pred_label > 0.5)  
     return accuracy
 
-def feature_prediction(train_data, test_data, index):
+def feature_prediction(train_data, test_data, index, max_seq_len):
     """Use the other features to predict a certain feature.
 
     Args:
