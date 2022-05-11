@@ -85,7 +85,7 @@ def main(args):
 
     data_path = "data/train.csv"
     X, T, _, args.max_seq_len, args.padding_value = data_preprocess(
-        data_path, args.max_seq_len
+        data_path, args.max_seq_len, filter=False
     )
 
     print(f"Processed data: {X.shape} (Idx x MaxSeqLen x Features)\n")
