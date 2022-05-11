@@ -29,7 +29,7 @@ from tqdm import tqdm
 from scipy import stats
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
 
-from joblib import Parallel, delayed
+from joblib import parallel
 
 def data_preprocess(
     file_name: str, 
@@ -119,10 +119,11 @@ def data_preprocess(
     #     print(f"Changed padding value to: {padding_value}\n")
     
     # Output initialization
-    def loop():
-        output = np.empty([no, max_seq_len, dim])  # Shape:[no, max_seq_len, dim]
-        output.fill(padding_value)
-        time = []
+    output = np.empty([no, max_seq_len, dim])  # Shape:[no, max_seq_len, dim]
+    output.fill(padding_value)
+    time = []
+    # For each uniq id
+    for i in tqdm(range(no)):
         # Extract the time-series data with a certain admissionid
 
         curr_data = ori_data[ori_data[index] == uniq_id[i]].to_numpy()
@@ -143,32 +144,7 @@ def data_preprocess(
         else:
             output[i, :curr_no, :] = curr_data[:, 1:]  # Shape: [1, max_seq_len, dim]
             time.append(curr_no)
-        return output, time, params, max_seq_len, padding_value
 
-    output, time, params, max_seq_len, padding_value = Parallel(n_jobs=-1)(delayed(loop)() for _ in tqdm(range(no)))
-    # # For each uniq id
-    # for i in tqdm(range(no)):
-    #     # Extract the time-series data with a certain admissionid
-# 
-    #     curr_data = ori_data[ori_data[index] == uniq_id[i]].to_numpy()
-# 
-    #     # Impute missing data
-    #     curr_data = imputer(curr_data, impute_vals)
-# 
-    #     # Normalize data
-    #     curr_data = scaler.transform(curr_data)
-    #     
-    #     # Extract time and assign to the preprocessed data (Excluding ID)
-    #     curr_no = len(curr_data)
-# 
-    #     # Pad data to `max_seq_len`
-    #     if curr_no >= max_seq_len:
-    #         output[i, :, :] = curr_data[:max_seq_len, 1:]  # Shape: [1, max_seq_len, dim]
-    #         time.append(max_seq_len)
-    #     else:
-    #         output[i, :curr_no, :] = curr_data[:, 1:]  # Shape: [1, max_seq_len, dim]
-    #         time.append(curr_no)
-# 
     return output, time, params, max_seq_len, padding_value
 
 def imputer(
