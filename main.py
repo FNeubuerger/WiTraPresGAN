@@ -160,7 +160,8 @@ def main(args):
     ori_feat_pred_perf = feature_prediction(
         (train_data, train_time), 
         (test_data, test_time),
-        feat_idx
+        feat_idx,
+        args.max_seq_len
     )
     print("Running feature prediction using generated data...")
     new_feat_pred_perf = feature_prediction(
