@@ -38,6 +38,7 @@ def data_preprocess(
     impute_method: str="mode", 
     scaling_method: str="minmax", 
     filter:bool=True,
+    data_frac:int=100
 ) -> Tuple[np.ndarray, np.ndarray, List]:
     """Load the data and preprocess into 3d numpy array.
     Preprocessing includes:
@@ -69,6 +70,9 @@ def data_preprocess(
     print("Loading data...\n")
     ori_data = pd.read_csv(file_name)
     print("Loaded Data of shape:", ori_data.shape)
+    if data_frac!=100:
+        print("Randomly sampling {} of the data:", data_frac)
+        ori_data = ori_data.sample(frac=data_frac/100)
     # Remove spurious column, so that column 0 is now 'admissionid'.
     #if ori_data.columns[0] == "Unnamed: 0":  
     #    ori_data = ori_data.drop(["Unnamed: 0"], axis=1)

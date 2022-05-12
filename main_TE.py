@@ -284,8 +284,12 @@ if __name__ == "__main__":
         '--learning_rate',
         default=1e-3,
         type=float)
-
+    parser.add_argument(
+        '--data_fraction',
+        default=100,
+        type=int)
+        
     args = parser.parse_args()
-
+    
     # Call main function
     main(args)
