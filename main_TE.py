@@ -85,7 +85,7 @@ def main(args):
 
     data_path = "data/train.csv"
     X, T, _, args.max_seq_len, args.padding_value = data_preprocess(
-        data_path, args.max_seq_len, filter=False
+        data_path, max_seq_len=args.max_seq_len, filter=False, data_frac = args.data_fraction
     )
 
     print(f"Processed data: {X.shape} (Idx x MaxSeqLen x Features)\n")
@@ -288,7 +288,7 @@ if __name__ == "__main__":
         '--data_fraction',
         default=100,
         type=int)
-        
+
     args = parser.parse_args()
     
     # Call main function

@@ -85,7 +85,7 @@ def main(args):
 
     data_path = "data/FEM_merged.csv"
     X, T, _, args.max_seq_len, args.padding_value = data_preprocess(
-        data_path, args.max_seq_len
+        data_path, max_seq_len=args.max_seq_len, data_frac = args.data_fraction
     )
 
     print(f"Processed data: {X.shape} (Idx x MaxSeqLen x Features)\n")
@@ -284,6 +284,11 @@ if __name__ == "__main__":
         '--learning_rate',
         default=1e-3,
         type=float)
+
+    parser.add_argument(
+        '--data_fraction',
+        default=100,
+        type=int)
 
     args = parser.parse_args()
 
