@@ -29,7 +29,7 @@ from tqdm import tqdm
 from scipy import stats
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
 
-from joblib import parallel
+from p_tqdm import t_map, p_map
 
 def data_preprocess(
     file_name: str, 
@@ -38,7 +38,8 @@ def data_preprocess(
     impute_method: str="mode", 
     scaling_method: str="minmax", 
     filter:bool=True,
-    data_frac:int=100
+    data_frac:int=100,
+    parallel = True
 ) -> Tuple[np.ndarray, np.ndarray, List]:
     """Load the data and preprocess into 3d numpy array.
     Preprocessing includes:
@@ -121,15 +122,7 @@ def data_preprocess(
     #     print(f"Padding value `{padding_value}` found in data")
     #     padding_value = np.nanmin(ori_data.to_numpy()) - 1
     #     print(f"Changed padding value to: {padding_value}\n")
-    
-    # Output initialization
-    output = np.empty([no, max_seq_len, dim])  # Shape:[no, max_seq_len, dim]
-    output.fill(padding_value)
-    time = []
-    # For each uniq id
-    for i in tqdm(range(no)):
-        # Extract the time-series data with a certain admissionid
-
+    def loop(i):
         curr_data = ori_data[ori_data[index] == uniq_id[i]].to_numpy()
 
         # Impute missing data
@@ -142,6 +135,35 @@ def data_preprocess(
         curr_no = len(curr_data)
 
         # Pad data to `max_seq_len`
+        if curr_no >= max_seq_len:
+            output[i, :, :] = curr_data[:max_seq_len, 1:]  # Shape: [1, max_seq_len, dim]
+            time.append(max_seq_len)
+        else:
+            output[i, :curr_no, :] = curr_data[:, 1:]  # Shape: [1, max_seq_len, dim]
+            time.append(curr_no)
+
+        return output, time, params, max_seq_len, padding_value
+    # Output initialization
+    output = np.empty([no, max_seq_len, dim])  # Shape:[no, max_seq_len, dim]
+    output.fill(padding_value)
+    time = []
+
+    if parallel==True:
+        out = t_map(loop, range(no))
+        output, time, params, max_seq_len, padding_value = out[0]
+    else:
+     # For each uniq id
+     for i in tqdm(range(no)):
+        # Extract the time-series data with a certain admissionid
+        curr_data = ori_data[ori_data[index] == uniq_id[i]].to_numpy()
+        # Impute missing data
+        curr_data = imputer(curr_data, impute_vals)
+        # Normalize data
+        curr_data = scaler.transform(curr_data)
+         
+        # Extract time and assign to the preprocessed data (Excluding ID)
+        curr_no = len(curr_data)
+#          # Pad data to `max_seq_len`
         if curr_no >= max_seq_len:
             output[i, :, :] = curr_data[:max_seq_len, 1:]  # Shape: [1, max_seq_len, dim]
             time.append(max_seq_len)
