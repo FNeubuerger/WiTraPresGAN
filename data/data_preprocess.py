@@ -29,7 +29,7 @@ from tqdm import tqdm
 from scipy import stats
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
 
-from p_tqdm import t_map, p_map
+from pqdm.threads import pqdm
 
 def data_preprocess(
     file_name: str, 
@@ -149,7 +149,7 @@ def data_preprocess(
     time = []
 
     if parallel==True:
-        out = t_map(loop, range(no))
+        out = pqdm(range(no), loop, n_jobs=64)
         output, time, params, max_seq_len, padding_value = out[0]
     else:
      # For each uniq id

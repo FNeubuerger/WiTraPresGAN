@@ -1,7 +1,7 @@
 #!/bin/bash
 train=true
 export TZ="GMT-8"
-frac = 10
+frac=100
 # Experiment variables
 exp="Tennessee_Eastman_$frac"
 # Iteration variables
@@ -15,7 +15,7 @@ python main_TE.py \
 --is_train          $train \
 --seed              420133769 \
 --feat_pred_no      1 \
---max_seq_len       150 \
+--max_seq_len       10 \
 --train_rate        0.5 \
 --emb_epochs        $emb_epochs \
 --sup_epochs        $sup_epochs \
