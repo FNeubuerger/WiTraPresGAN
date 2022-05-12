@@ -149,7 +149,7 @@ def data_preprocess(
     time = []
 
     if parallel==True:
-        out = t_map(loop, range(no))
+        out = p_map(loop, range(no))
         output, time, params, max_seq_len, padding_value = out[0]
     else:
      # For each uniq id
