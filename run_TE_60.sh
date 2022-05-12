@@ -1,7 +1,7 @@
 #!/bin/bash
 train=true
 export TZ="GMT-8"
-frac = 60
+frac=60
 # Experiment variables
 exp="Tennessee_Eastman_$frac"
 # Iteration variables
