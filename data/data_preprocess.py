@@ -39,7 +39,7 @@ def data_preprocess(
     scaling_method: str="minmax", 
     filter:bool=True,
     data_frac:int=100,
-    parallel = True
+    parallel = False
 ) -> Tuple[np.ndarray, np.ndarray, List]:
     """Load the data and preprocess into 3d numpy array.
     Preprocessing includes:
@@ -149,7 +149,7 @@ def data_preprocess(
     time = []
 
     if parallel==True:
-        out = p_map(loop, range(no))
+        out = t_map(loop, range(no))
         output, time, params, max_seq_len, padding_value = out[0]
     else:
      # For each uniq id
