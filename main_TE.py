@@ -124,17 +124,17 @@ def main(args):
     
     # Save splitted data and generated data
     with open(f"{args.model_path}/train_data.pickle", "wb") as fb:
-        pickle.dump(train_data, fb)
+        pickle.dump(train_data, fb, protocol=4)
     with open(f"{args.model_path}/train_time.pickle", "wb") as fb:
-        pickle.dump(train_time, fb)
+        pickle.dump(train_time, fb, protocol=4)
     with open(f"{args.model_path}/test_data.pickle", "wb") as fb:
-        pickle.dump(test_data, fb)
+        pickle.dump(test_data, fb, protocol=4)
     with open(f"{args.model_path}/test_time.pickle", "wb") as fb:
-        pickle.dump(test_time, fb)
+        pickle.dump(test_time, fb, protocol=4)
     with open(f"{args.model_path}/fake_data.pickle", "wb") as fb:
-        pickle.dump(generated_data, fb)
+        pickle.dump(generated_data, fb, protocol=4)
     with open(f"{args.model_path}/fake_time.pickle", "wb") as fb:
-        pickle.dump(generated_time, fb)
+        pickle.dump(generated_time, fb, protocol=4)
 
     #########################
     # Preprocess data for seeker
