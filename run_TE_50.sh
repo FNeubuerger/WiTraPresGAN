@@ -5,8 +5,8 @@ frac=50
 # Experiment variables
 exp="Tennessee_Eastman_$frac"
 # Iteration variables
-emb_epochs=5000
-sup_epochs=5000
+emb_epochs=500
+sup_epochs=500
 gan_epochs=100
 
 python main_TE.py \

@@ -1,13 +1,14 @@
 #!/bin/bash
 train=true
 export TZ="GMT-8"
-frac=40
+
 # Experiment variables
-exp="Tennessee_Eastman_$frac"
+exp="Tennessee_Eastman"
+
 # Iteration variables
-emb_epochs=500
-sup_epochs=500
-gan_epochs=100
+emb_epochs=5
+sup_epochs=5
+gan_epochs=5
 
 python main_TE.py \
 --device            cuda \
@@ -15,7 +16,7 @@ python main_TE.py \
 --is_train          $train \
 --seed              420133769 \
 --feat_pred_no      1 \
---max_seq_len       25 \
+--max_seq_len       2 \
 --train_rate        0.5 \
 --emb_epochs        $emb_epochs \
 --sup_epochs        $sup_epochs \
@@ -26,4 +27,3 @@ python main_TE.py \
 --dis_thresh        0.15 \
 --optimizer         adam \
 --learning_rate     1e-3 \
---data_fraction     $frac

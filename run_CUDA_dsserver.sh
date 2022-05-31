@@ -3,12 +3,12 @@ train=true
 export TZ="GMT-8"
 
 # Experiment variables
-exp="quick_test"
+exp="FEM100"
 
 # Iteration variables
-emb_epochs=500
-sup_epochs=500
-gan_epochs=500
+emb_epochs=5000
+sup_epochs=5000
+gan_epochs=1000
 
 python main.py \
 --device            cuda \
