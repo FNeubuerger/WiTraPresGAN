@@ -172,11 +172,23 @@ def main(args):
     )
 
     feat_pred = [ori_feat_pred_perf, new_feat_pred_perf]
-
+    
     print('Feature prediction results:\n' +
           f'(1) Ori: {str(np.round(ori_feat_pred_perf, 4))}\n' +
           f'(2) New: {str(np.round(new_feat_pred_perf, 4))}\n')
-
+    print('Feature prediction results:\n' +
+          f'(1) Ori: {str(np.mean(np.round(ori_feat_pred_perf, 4)))} +- {str(np.std(np.round(ori_feat_pred_perf, 4)))}\n' +
+          f'(2) New: {str(np.mean(np.round(new_feat_pred_perf, 4)))} +- {str(np.std(np.round(new_feat_pred_perf, 4)))}\n')
+          
+                                       
+    with open("{args.model_path}/result.txt", "w") as file:
+    	file.write('Feature prediction results:\n' +
+          f'(1) Ori: {str(np.round(ori_feat_pred_perf, 4))}\n' +
+          f'(2) New: {str(np.round(new_feat_pred_perf, 4))}\n' +
+    'Feature prediction results:\n' +
+                       f'(1) Ori: {str(np.mean(np.round(ori_feat_pred_perf, 4)))} +- {str(np.std(np.round(ori_feat_pred_perf, 4)))}\n' +
+                                 f'(2) New: {str(np.mean(np.round(new_feat_pred_perf, 4)))} +- {str(np.std(np.round(new_feat_pred_perf, 4)))}\n'
+    	)
     # # 2. One step ahead prediction
     # print("Running one step ahead prediction using original data...")
     # ori_step_ahead_pred_perf = one_step_ahead_prediction(

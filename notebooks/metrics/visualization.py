@@ -66,9 +66,10 @@ def visualization(ori_data, generated_data, analysis):
                 c = colors[anal_sample_no:], alpha = 0.2, label = "Synthetic")
   
     ax.legend()
-    plt.title('PCA plot')
+    #plt.title('PCA plot')
     plt.xlabel('x-pca')
-    plt.ylabel('y_pca')
+    plt.ylabel('y-pca')
+    plt.savefig('../pca.png')
     plt.show()
     
   elif analysis == 'tsne':
@@ -90,7 +91,8 @@ def visualization(ori_data, generated_data, analysis):
   
     ax.legend()
       
-    plt.title('t-SNE plot')
+    #plt.title('t-SNE plot')
     plt.xlabel('x-tsne')
-    plt.ylabel('y_tsne')
+    plt.ylabel('y-tsne')
+    plt.savefig('../tsne.png')
     plt.show()
