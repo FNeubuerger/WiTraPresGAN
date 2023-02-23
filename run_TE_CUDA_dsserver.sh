@@ -14,8 +14,8 @@ python main_TE.py \
 --exp               $exp \
 --is_train          $train \
 --seed              420133769 \
---feat_pred_no      1 \
---max_seq_len       10 \
+--feat_pred_no      50 \
+--max_seq_len       25 \
 --train_rate        0.5 \
 --emb_epochs        $emb_epochs \
 --sup_epochs        $sup_epochs \

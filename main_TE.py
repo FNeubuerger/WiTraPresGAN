@@ -19,7 +19,7 @@ from data.data_preprocess import data_preprocess
 from metrics.metric_utils import (
     feature_prediction, one_step_ahead_prediction, reidentify_score
 )
-
+from torch.nn import DataParallel
 from models.timegan import TimeGAN
 from models.utils import timegan_trainer, timegan_generator
 
@@ -67,7 +67,7 @@ def main(args):
 
     if args.device == "cuda" and torch.cuda.is_available():
         print("Using CUDA\n")
-        args.device = torch.device("cuda")
+        args.device = torch.device("cuda:1")
         # torch.cuda.manual_seed_all(args.seed)
         torch.cuda.manual_seed(args.seed)
         torch.backends.cudnn.deterministic = True
@@ -82,30 +82,48 @@ def main(args):
     #########################
     # Load and preprocess data for model
     #########################
-
-    data_path = "data/train.csv"
-    X, T, _, args.max_seq_len, args.padding_value = data_preprocess(
+    if args.is_train == True:
+        data_path = "data/train.csv"
+        X, T, _, args.max_seq_len, args.padding_value = data_preprocess(
         data_path, max_seq_len=args.max_seq_len, filter=False, data_frac = args.data_fraction
     )
 
-    print(f"Processed data: {X.shape} (Idx x MaxSeqLen x Features)\n")
-    print(f"Original data preview:\n{X[:2, :10, :2]}\n")
+        print(f"Processed data: {X.shape} (Idx x MaxSeqLen x Features)\n")
+        print(f"Original data preview:\n{X[:2, :10, :2]}\n")
 
-    args.feature_dim = X.shape[-1]
-    args.Z_dim = X.shape[-1]
+        
 
     # Train-Test Split data and time
-    train_data, test_data, train_time, test_time = train_test_split(
+        train_data, test_data, train_time, test_time = train_test_split(
         X, T, test_size=args.train_rate, random_state=args.seed
     )
-
+        args.max_seq_len = 25
+        args.padding_value = -1.0
+        args.feature_dim = train_data.shape[-1]
+        args.Z_dim = train_data.shape[-1]
+        
     #########################
     # Initialize and Run model
     #########################
-
+    if args.is_train == False:
+        with open(f"{args.model_path}/train_data.pickle", "rb") as fb:
+            train_data = pickle.load(fb)
+        with open(f"{args.model_path}/train_time.pickle", "rb") as fb:
+            train_time = pickle.load(fb)
+        with open(f"{args.model_path}/test_data.pickle", "rb") as fb:
+            test_time = pickle.load(fb)
+        with open(f"{args.model_path}/test_time.pickle", "rb") as fb:
+            test_time = pickle.load(fb)
+        with open(f"{args.model_path}/fake_data.pickle", "rb") as fb:
+            generated_data = pickle.load(fb)
+        with open(f"{args.model_path}/fake_time.pickle", "rb") as fb:
+            generated_time = pickle.load(fb)
+        args.max_seq_len = 25
+        args.padding_value = -1.0
+        args.feature_dim = train_data.shape[-1]
+        args.Z_dim = train_data.shape[-1]
     # Log start time
     start = time.time()
-
     model = TimeGAN(args)
     if args.is_train == True:
         timegan_trainer(model, train_data, train_time, args)
@@ -123,19 +141,20 @@ def main(args):
     #########################
     
     # Save splitted data and generated data
-    with open(f"{args.model_path}/train_data.pickle", "wb") as fb:
-        pickle.dump(train_data, fb, protocol=4)
-    with open(f"{args.model_path}/train_time.pickle", "wb") as fb:
-        pickle.dump(train_time, fb, protocol=4)
-    with open(f"{args.model_path}/test_data.pickle", "wb") as fb:
-        pickle.dump(test_data, fb, protocol=4)
-    with open(f"{args.model_path}/test_time.pickle", "wb") as fb:
-        pickle.dump(test_time, fb, protocol=4)
-    with open(f"{args.model_path}/fake_data.pickle", "wb") as fb:
-        pickle.dump(generated_data, fb, protocol=4)
-    with open(f"{args.model_path}/fake_time.pickle", "wb") as fb:
-        pickle.dump(generated_time, fb, protocol=4)
-
+    if args.is_train == True:
+        with open(f"{args.model_path}/train_data.pickle", "wb") as fb:
+            pickle.dump(train_data, fb, protocol=4)
+        with open(f"{args.model_path}/train_time.pickle", "wb") as fb:
+            pickle.dump(train_time, fb, protocol=4)
+        with open(f"{args.model_path}/test_data.pickle", "wb") as fb:
+            pickle.dump(test_data, fb, protocol=4)
+        with open(f"{args.model_path}/test_time.pickle", "wb") as fb:
+            pickle.dump(test_time, fb, protocol=4)
+        with open(f"{args.model_path}/fake_data.pickle", "wb") as fb:
+            pickle.dump(generated_data, fb, protocol=4)
+        with open(f"{args.model_path}/fake_time.pickle", "wb") as fb:
+            pickle.dump(generated_time, fb, protocol=4)
+    
     #########################
     # Preprocess data for seeker
     #########################
@@ -176,7 +195,18 @@ def main(args):
     print('Feature prediction results:\n' +
           f'(1) Ori: {str(np.round(ori_feat_pred_perf, 4))}\n' +
           f'(2) New: {str(np.round(new_feat_pred_perf, 4))}\n')
-
+    print('Feature prediction results:\n' +
+                       f'(1) Ori: {str(np.mean(np.round(ori_feat_pred_perf, 4)))} +- {str(np.std(np.round(ori_feat_pred_perf, 4)))}\n' +
+                                 f'(2) New: {str(np.mean(np.round(new_feat_pred_perf, 4)))} +- {str(np.std(np.round(new_feat_pred_perf, 4)))}\n')
+                                 
+    with open("{args.model_path}/result.txt", "w") as file:
+    	file.write('Feature prediction results:\n' +
+          f'(1) Ori: {str(np.round(ori_feat_pred_perf, 4))}\n' +
+          f'(2) New: {str(np.round(new_feat_pred_perf, 4))}\n' +
+    'Feature prediction results:\n' +
+                       f'(1) Ori: {str(np.mean(np.round(ori_feat_pred_perf, 4)))} +- {str(np.std(np.round(ori_feat_pred_perf, 4)))}\n' +
+                                 f'(2) New: {str(np.mean(np.round(new_feat_pred_perf, 4)))} +- {str(np.std(np.round(new_feat_pred_perf, 4)))}\n'
+    	)
     # # 2. One step ahead prediction
     # print("Running one step ahead prediction using original data...")
     # ori_step_ahead_pred_perf = one_step_ahead_prediction(
