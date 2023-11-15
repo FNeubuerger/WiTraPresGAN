@@ -68,7 +68,7 @@ def visualization(ori_data, generated_data, analysis):
     ax.legend()
     plt.title('PCA plot')
     plt.xlabel('x-pca')
-    plt.ylabel('y_pca')
+    plt.ylabel('y-pca')
     plt.show()
     
   elif analysis == 'tsne':
@@ -85,12 +85,12 @@ def visualization(ori_data, generated_data, analysis):
       
     plt.scatter(tsne_results[:anal_sample_no,0], tsne_results[:anal_sample_no,1], 
                 c = colors[:anal_sample_no], alpha = 0.2, label = "Original")
-    plt.scatter(tsne_results[anal_sample_no:,0], tsne_results[anal_sample_no:,1], 
-                c = colors[anal_sample_no:], alpha = 0.2, label = "Synthetic")
+    #plt.scatter(tsne_results[anal_sample_no:,0], tsne_results[anal_sample_no:,1], 
+    #            c = colors[anal_sample_no:], alpha = 0.2, label = "Synthetic")
   
     ax.legend()
       
     plt.title('t-SNE plot')
     plt.xlabel('x-tsne')
-    plt.ylabel('y_tsne')
+    plt.ylabel('y-tsne')
     plt.show()
