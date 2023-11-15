@@ -62,7 +62,7 @@ def feature_prediction(train_data, test_data, index, max_seq_len):
     args["model_type"] = "gru"
     args["bidirectional"] = False
     args["epochs"] = 20
-    args["batch_size"] = 128
+    args["batch_size"] = 64
     args["in_dim"] = dim-1
     args["h_dim"] = dim-1
     args["out_dim"] = 1
